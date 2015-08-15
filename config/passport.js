@@ -1,6 +1,10 @@
 var passport = require("passport");
+var InstagramStrategy = require("passport-instagram").Strategy;
+var Promise = require("es6-promise").Promise;
 
 var dataAccess = require("../data/access");
+var Constants = require("./constants");
+var processInstagramProfile = require("../utils/processInstagramProfile");
 
 function configPassport(app) {
   app.use(passport.initialize());
@@ -17,6 +21,24 @@ function configPassport(app) {
       })
       .catch(done);
   });
+
+  passport.use(new InstagramStrategy({
+    clientID: Constants.INSTAGRAM_CLIENT_ID,
+    clientSecret: Constants.INSTAGRAM_CLIENT_SECRET,
+    callbackURL: "/oauth_callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    console.log("profile:", profile);
+    console.log("accessToken:", accessToken);
+    console.log("refreshToken:", refreshToken);
+    var parsedProfile = processInstagramProfile(profile);
+    Promise.all([
+      dataAccess.update(parsedProfile, "profiles", profile.id),
+      dataAccess.update({accessToken: accessToken}, "tokens", profile.id)
+    ])
+    .then(function() { done(null, parsedProfile); })
+    .catch(done);
+  }));
 }
 
 module.exports = configPassport;

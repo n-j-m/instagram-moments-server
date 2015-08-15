@@ -3,6 +3,12 @@ var express = require("express");
 var logger = require("morgan");
 var bodyParser = require("body-parser");
 var cookieParser = require("cookie-parser");
+var session = require("express-session");
+
+// verify environment
+var verifyEnvironment = require("./utils/verifyEnvironment");
+
+verifyEnvironment();
 
 // configure express
 var app = express();
@@ -13,20 +19,21 @@ app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
 app.use(session({
   secret: "dishesandspoonsandrunningandsuch",
   resave: false,
   saveUninitialized: true
 }));
+app.use(express.static(path.join(__dirname, "public")));
 
-var configPassport = requrie("./config/passport");
+var configPassport = require("./config/passport");
 
 configPassport(app);
 
 var indexRouter = require("./routes/index");
+var authRouter = require("./routes/auth");
 
-app.use("/", indexRouter);
+app.use("/", authRouter, indexRouter);
 
 app.listen(app.get("port"), function() {
   console.log("server listening on port", app.get("port"));
