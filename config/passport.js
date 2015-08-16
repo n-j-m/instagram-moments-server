@@ -28,9 +28,6 @@ function configPassport(app) {
     callbackURL: "/oauth_callback"
   },
   function(accessToken, refreshToken, profile, done) {
-    console.log("profile:", profile);
-    console.log("accessToken:", accessToken);
-    console.log("refreshToken:", refreshToken);
     var parsedProfile = processInstagramProfile(profile);
     Promise.all([
       dataAccess.update(parsedProfile, "profiles", profile.id),

@@ -8,6 +8,7 @@ function post(url, data, parseResponse) {
   return new Promise(function(resolve, reject) {
     request
       .post(url)
+      .type("form")
       .send(data)
       .end(function(err, res) {
         if (err) {

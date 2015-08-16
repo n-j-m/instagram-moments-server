@@ -1,5 +1,9 @@
 var passport = require("passport");
 var Router = require("express").Router;
+var Promise = require("es6-promise").Promise;
+
+var subscribeUser = require("../moments/subscribeUser");
+var dataAccess = require("../data/access");
 
 var router = Router();
 
@@ -10,7 +14,16 @@ router.get(
   passport.authenticate("instagram", { failureRedirect: "/" }),
   function(req, res) {
     // success
-    res.redirect("/done");
+    subscribeUser(req.user)
+      .then(function(subscription) {
+        return dataAccess.update(subscription, "subscriptions", req.user.id);
+      })
+      .then(function() {
+        res.redirect("/done");
+      })
+      .catch(function(err) {
+        res.status(500).json(err);
+      });
   }
 );
 

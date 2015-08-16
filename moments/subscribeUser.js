@@ -2,9 +2,10 @@ var request = require("superagent");
 
 var Constants = require("../config/constants");
 var post = require("../utils/web").post;
+var dataAccess = require("../data/access");
 
 function parseResponse(res) {
-
+  return res.body.data;
 }
 
 function subscribeUser(profile) {
@@ -21,3 +22,5 @@ function subscribeUser(profile) {
     parseResponse
   );
 }
+
+module.exports = subscribeUser;

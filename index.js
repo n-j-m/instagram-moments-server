@@ -32,8 +32,9 @@ configPassport(app);
 
 var indexRouter = require("./routes/index");
 var authRouter = require("./routes/auth");
+var webhookRouter = require("./routes/webhook");
 
-app.use("/", authRouter, indexRouter);
+app.use("/", authRouter, indexRouter, webhookRouter);
 
 app.listen(app.get("port"), function() {
   console.log("server listening on port", app.get("port"));
