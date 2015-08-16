@@ -8,6 +8,10 @@ router.get("/webhook", function(req, res) {
 });
 
 router.post("/webhook", function(req, res) {
+  if (!req.verified) {
+    return res.status(403).end("Unauthorized");
+  }
+
   console.log("body:", req.body);
   res.status(200).end("");
 });

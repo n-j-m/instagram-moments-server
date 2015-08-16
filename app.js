@@ -8,6 +8,9 @@ var session = require("express-session");
 // verify environment
 var verifyEnvironment = require("./utils/verifyEnvironment");
 
+var verifySignature = require("./utils/verifySignature");
+var Constants = require("./config/constants");
+
 verifyEnvironment();
 
 // configure express
@@ -16,11 +19,13 @@ app.set("port", process.env.PORT || 3000);
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
 app.use(logger("dev"));
-app.use(bodyParser.json());
+app.use(bodyParser.json({
+  verify: verifySignature
+}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({
-  secret: "dishesandspoonsandrunningandsuch",
+  secret: Constants.SESSION_SECRET,
   resave: false,
   saveUninitialized: true
 }));
@@ -36,6 +41,4 @@ var webhookRouter = require("./routes/webhook");
 
 app.use("/", authRouter, indexRouter, webhookRouter);
 
-app.listen(app.get("port"), function() {
-  console.log("server listening on port", app.get("port"));
-});
+module.exports = app;
