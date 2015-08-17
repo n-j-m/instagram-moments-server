@@ -16,9 +16,11 @@ router.get(
     // success
     subscribeUser(req.user)
       .then(function(subscription) {
+        // save user's subscription
         return dataAccess.update(subscription, "subscriptions", req.user.id);
       })
       .then(function() {
+        // redirect to user's profile
         res.redirect("/done");
       })
       .catch(function(err) {
