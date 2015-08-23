@@ -1,6 +1,8 @@
 var lt = require("localtunnel");
 var http = require("http");
 
+require("dotenv").load();
+
 var app = require("./app");
 
 var server = http.createServer(app);

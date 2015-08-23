@@ -58,3 +58,6 @@ build/Release
 node_modules
 
 .DS_Store
+
+# Environment
+.env
