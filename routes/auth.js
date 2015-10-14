@@ -1,6 +1,5 @@
 var passport = require("passport");
 var Router = require("express").Router;
-var Promise = require("es6-promise").Promise;
 
 var subscribeUser = require("../moments/subscribeUser");
 var dataAccess = require("../data/access");

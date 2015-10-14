@@ -1,4 +1,5 @@
 var crypto = require("crypto");
+var Constants = require("../config/constants");
 
 // verifies the signature of the webhook post
 function verifySignature(req, res, buf) {
@@ -7,7 +8,7 @@ function verifySignature(req, res, buf) {
     return;
   }
   // requires signature validation
-  var hmac = crypto.createHmac("SHA-1", Constants.INSTAGRAM_CLIENT_SECRET);
+  var hmac = crypto.createHmac("sha1", Constants.INSTAGRAM_CLIENT_SECRET);
 
   var hash = hmac.update(buf).digest("hex");
   if (hash !== signature) {

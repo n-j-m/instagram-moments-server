@@ -1,5 +1,4 @@
 var Firebase = require("firebase");
-var Promise = require("es6-promise").Promise;
 
 var Constants = require("../config/constants");
 var toArray = require("../utils/toArray");

@@ -21,6 +21,23 @@ function post(url, data, parseResponse) {
   });
 }
 
+function get(url, data, parseResponse) {
+  return new Promise(function(resolve, reject) {
+    request
+      .get(url)
+      .query(data)
+      .end(function(err, res) {
+        if (err) {
+          return reject(err);
+        }
+
+        parseResponse = parseResponse || returnResponse;
+        return resolve(parseResponse(res));
+      });
+  });
+}
+
 module.exports = {
-  post: post
+  post: post,
+  get: get
 };

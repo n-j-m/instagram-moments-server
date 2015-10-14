@@ -1,6 +1,5 @@
 var passport = require("passport");
 var InstagramStrategy = require("passport-instagram").Strategy;
-var Promise = require("es6-promise").Promise;
 
 var dataAccess = require("../data/access");
 var Constants = require("./constants");
